@@ -5,9 +5,14 @@ const {Test_Result} = require("../model/TestResults")
 const Create_Test = async(req , res) => {
     try{
         const data = req.body;
+        d = new Date();
+        utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        nd = new Date(utc + (3600000*+5.5));
+        var ist =  nd.toLocaleString();
+        ist = ist.split(',')[0]
         const new_test = new Test({
             Test_name : data.Test_name,
-            Test_date : data.Test_date,
+            Test_date : ist,
             Test_Timings : data.Test_Timings,
             conducted : false,
             Questions : data.Questions

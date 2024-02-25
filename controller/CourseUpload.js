@@ -7,8 +7,6 @@ const CourseUploader = async (req, res) => {
         const { course_name, course_desc } = req.body;
         const files = req.files;
 
-        // console.log(files)
-
         if (!course_desc || !course_name || !files) {
             return res.status(400).json("Fields cannot be empty or files not provided!");
         }
@@ -24,8 +22,6 @@ const CourseUploader = async (req, res) => {
                     const result = await cloudinary.uploader.upload(file.path, {
                         resource_type: mediatype
                     });
-
-                    console.log(result)
 
                     if (mediatype === 'image') {
                         images.push({
@@ -75,7 +71,6 @@ const OneCourse = async(req , res) => {
         if(!data){
             return req.status(400).json("No Such Course Exists");
         }
-        console.log(data)
         return res.status(200).json(data);
     }
     catch(err){
@@ -90,7 +85,6 @@ const GetAllCourses = async(req , res) => {
         if(!courses){
             return res.status(200).json("No Courses Exists");
         }
-        console.log(courses)
         return res.status(200).json(courses);
     }
     catch(err){
