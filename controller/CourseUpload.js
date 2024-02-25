@@ -49,6 +49,7 @@ const CourseUploader = async (req, res) => {
             });
         });
 
+
         await Promise.all(uploadPromises);
         // Create a new course with the uploaded images and videos
         const new_course = new Course({
@@ -67,4 +68,35 @@ const CourseUploader = async (req, res) => {
     }
 };
 
-module.exports = { CourseUploader };
+const OneCourse = async(req , res) => {
+    try{
+        const {c_id} = req.params;
+        const data = await Course.findById(c_id);
+        if(!data){
+            return req.status(400).json("No Such Course Exists");
+        }
+        console.log(data)
+        return res.status(200).json(data);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(400).json("Unable to fetch required course");
+    }
+}
+
+const GetAllCourses = async(req , res) => {
+    try{
+        const courses = await Course.find();
+        if(!courses){
+            return res.status(200).json("No Courses Exists");
+        }
+        console.log(courses)
+        return res.status(200).json(courses);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(400).json("unable to fetch all courses");
+    }
+}
+
+module.exports = { CourseUploader , OneCourse , GetAllCourses};
