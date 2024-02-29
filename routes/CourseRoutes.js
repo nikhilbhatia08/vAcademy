@@ -6,6 +6,10 @@ const upload = require("../MiddleWares.js/Multerr")
 router
     .post("/upload" , upload.any() , CourseUploader)
     .get("/getCourse/:c_id" , OneCourse)
-    .get("/getOneCourse/All" , GetAllCourses)
+    .get("/get/all" , GetAllCourses)
+    
+
+
+
 
 module.exports = router;
