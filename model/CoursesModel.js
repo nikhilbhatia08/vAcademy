@@ -1,23 +1,37 @@
 const mongoose = require("mongoose");
 
 const CourseSchema = new mongoose.Schema({
-    title : {
+    course_name : {
         type : String,
         required : true,
     },
-    image : {
+    course_desc : {
         type : String,
         required : true
     }
     ,
-    rating : {
-        type : Number,
-        required : true
-    },
-    price : {
-        type : Number,
-        required : true
-    },
+    course_images : [{
+        mediaType : String,
+        url : {
+            type : String,
+            required  :true
+        },
+        public_id : {
+            type : String,
+            required : true
+        }
+    }],
+    course_videos : [{
+        mediaType : String,
+        url : {
+            type : String,
+            required  :true
+        },
+        public_id : {
+            type : String,
+            required : true
+        }
+    }]
 })
 
 const Course = mongoose.model('Course' , CourseSchema);
