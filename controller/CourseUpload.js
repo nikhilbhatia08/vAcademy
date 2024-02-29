@@ -81,7 +81,7 @@ const OneCourse = async(req , res) => {
 
 const GetAllCourses = async(req , res) => {
     try{
-        const courses = await Course.find();
+        const courses = await Course.find({});
         if(!courses){
             return res.status(200).json("No Courses Exists");
         }
