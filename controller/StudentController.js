@@ -42,6 +42,7 @@ const Register = async(req , res) => {
             getToken = MakeToken(student);
             console.log(student)
             return res.status(200).json({
+                id : student._id,
                 name : student.name,
                 email : student.email,
                 Token : getToken
