@@ -24,14 +24,6 @@ const Register = async(req , res) => {
             return res.status(400).json("Fields cannot be empty");
         }
 
-        const duplicate = email;
-        let splits = duplicate.split("@");
-
-        if(!(splits[1] == "cmrcet" && (splits[2] === "stu.ac.in" || splits[2] === "org.ac.in" || splits[2] === "fac.ac.in") )){
-            return res.status(400).json("Invalid Email");
-        }
-        const designation = splits[2].split(".")[0];
-
         if(!validator.isStrongPassword(password)){
             return res.status(400).json("Enter a strong password")
         }
@@ -39,7 +31,6 @@ const Register = async(req , res) => {
         student = new LoginModel({
             name,
             email,
-            des : designation,
             password
         })
 
