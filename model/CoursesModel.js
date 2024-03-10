@@ -10,32 +10,20 @@ const CourseSchema = new mongoose.Schema({
         required : true
     }
     ,
-    course_data : {
+    instructor : {
         type : String,
         required : true
     },
-    course_images : [{
-        mediaType : String,
-        url : {
-            type : String,
-            required  :true
-        },
-        public_id : {
-            type : String,
-            required : true
-        }
-    }],
-    course_videos : [{
-        mediaType : String,
-        url : {
-            type : String,
-            required  :true
-        },
-        public_id : {
-            type : String,
-            required : true
-        }
-    }]
+    img_url: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    courseobjs: [],
+    sections: [{}]
 })
 
 const Course = mongoose.model('Course' , CourseSchema);

@@ -4,42 +4,41 @@ const cloudinary = require("../utils/cloudinary");
 const Create_Forum = async(req , res) => {
     try{
         const data = req.body;
-        const files = req.files
-
         const images = [];
-        const uploadPromises = files.map((file) => {
-            return new Promise(async (resolve, reject) => {
-                const mediatype = file.mimetype.startsWith('image') ? 'image' : 'video';
+        // const uploadPromises = files.map((file) => {
+        //     return new Promise(async (resolve, reject) => {
+        //         const mediatype = file.mimetype.startsWith('image') ? 'image' : 'video';
 
-                try {
-                    const result = await cloudinary.uploader.upload(file.path, {
-                        resource_type: mediatype
-                    });
+        //         try {
+        //             const result = await cloudinary.uploader.upload(file.path, {
+        //                 resource_type: mediatype
+        //             });
 
-                    console.log(result)
+        //             console.log(result)
 
-                    if (mediatype === 'image') {
-                        images.push({
-                            mediaType: mediatype,
-                            url: result.secure_url,
-                            public_id : result.public_id
-                        });
-                    } 
-                    resolve();
-                } catch (error) {
-                    console.error(error);
-                    reject(new Error("Error while uploading to Cloudinary"));
-                }
-            });
-        });
+        //             if (mediatype === 'image') {
+        //                 images.push({
+        //                     mediaType: mediatype,
+        //                     url: result.secure_url,
+        //                     public_id : result.public_id
+        //                 });
+        //             } 
+        //             resolve();
+        //         } catch (error) {
+        //             console.error(error);
+        //             reject(new Error("Error while uploading to Cloudinary"));
+        //         }
+        //     });
+        // });
 
-        await Promise.all(uploadPromises);
+        // await Promise.all(uploadPromises);
 
         const new_Forum = new Forum({
             Author_id : data.id,
+            title: data.title,
             Author_name : data.name,
-            Description : data.Description,
-            Author_images : images,
+            Description : data.description,
+            Author_image : data.img_url,
             Total_likes : 0,
             Liked_Users : [],
             Commenters_reply : []
@@ -63,36 +62,36 @@ const Post_Comment = async(req , res) => {
     const {id}= req.params;
     try{
         const data = req.body;
-        const files = req.files;
+        // const files = req.files;
 
-        const images = [];
-        const uploadPromises = files.map((file) => {
-            return new Promise(async (resolve, reject) => {
-                const mediatype = file.mimetype.startsWith('image') ? 'image' : 'video';
+        // const images = [];
+        // const uploadPromises = files.map((file) => {
+        //     return new Promise(async (resolve, reject) => {
+        //         const mediatype = file.mimetype.startsWith('image') ? 'image' : 'video';
 
-                try {
-                    const result = await cloudinary.uploader.upload(file.path, {
-                        resource_type: mediatype
-                    });
+        //         try {
+        //             const result = await cloudinary.uploader.upload(file.path, {
+        //                 resource_type: mediatype
+        //             });
 
-                    console.log(result)
+        //             console.log(result)
 
-                    if (mediatype === 'image') {
-                        images.push({
-                            mediaType: mediatype,
-                            url: result.secure_url,
-                            public_id : result.public_id
-                        });
-                    } 
-                    resolve();
-                } catch (error) {
-                    console.error(error);
-                    reject(new Error("Error while uploading to Cloudinary"));
-                }
-            });
-        });
+        //             if (mediatype === 'image') {
+        //                 images.push({
+        //                     mediaType: mediatype,
+        //                     url: result.secure_url,
+        //                     public_id : result.public_id
+        //                 });
+        //             } 
+        //             resolve();
+        //         } catch (error) {
+        //             console.error(error);
+        //             reject(new Error("Error while uploading to Cloudinary"));
+        //         }
+        //     });
+        // });
 
-        await Promise.all(uploadPromises);
+        // await Promise.all(uploadPromises);
 
         d = new Date();
         utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -103,7 +102,6 @@ const Post_Comment = async(req , res) => {
             Commenters_id : data.id,
             Commenters_name : data.name,
             Commenters_reply : data.reply,
-            Commenters_images : images,
             time : ist
         }
 
@@ -130,6 +128,17 @@ const Post_Comment = async(req , res) => {
     catch(err){
         console.log(err);
         return res.status(400).json("Error uploading comment")
+    }
+}
+
+const getPosts = async(req, res) => {
+    try{
+        const result = await Forum.find({});
+        return res.status(200).json(result)
+    }
+    catch(error) {
+        console.log(error);
+        return res.status(500).json("Internal server error");
     }
 }
 
@@ -201,5 +210,6 @@ module.exports = {
     Create_Forum,
     Post_Comment,
     LikeForum,
+    getPosts,
     UnlikeForum
 }

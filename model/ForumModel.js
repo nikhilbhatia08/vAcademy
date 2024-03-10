@@ -9,6 +9,10 @@ const ForumSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    title: {
+        type: String,
+        required: true
+    },
     Description : {
         type : String,
         required : true
@@ -48,17 +52,6 @@ const ForumSchema = new mongoose.Schema({
                 type : String,
                 required : true
             },
-            Commenters_images : [{
-                mediaType : String,
-                url : {
-                    type : String,
-                    required  :true
-                },
-                public_id : {
-                    type : String,
-                    required : true
-                }
-            }],
             time : {
                 type : String,
                 required : true
