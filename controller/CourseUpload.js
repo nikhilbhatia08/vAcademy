@@ -7,8 +7,12 @@ const { Db } = require("mongodb");
 
 const CourseUploader = async (req, res) => {
     try {
-        const { name, desc, instructor, price, objs, sections } = req.body;
+        const { name, desc, instructor, price, obj, sec } = req.body;
         const files = req.files;
+        console.log(files);
+        //console.log(sections);
+        const sections = JSON.parse(sec);
+        const objs = JSON.parse(obj);
 
         if (!desc || !name || !files) {
             return res.status(400).json("Fields cannot be empty or files not provided!");
@@ -61,13 +65,15 @@ const CourseUploader = async (req, res) => {
                 section_title: sec.section_title,
                 lectures: sec.lectures.map((lec, idx) => {
                     return {
-                        title: lec.title,
+                        title: lec.lecture_title,
                         duration: lec.duration,
                         video_url: videos[idx]
                     }
                 })
             })
         })
+
+        console.log(images);
 
         // const crs = []
         // const help = JSON.parse(courseobjs);

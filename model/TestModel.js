@@ -5,40 +5,22 @@ const TestSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    Test_date : {
-        type : String,
-        required : true
-    },
-    Test_Timings : {
-        type : String,
-        required : true
-    },
-    conducted : {
-        type : Boolean,
+    Test_Marks:
+    {
+        type : Number,
         required : true
     },
     Questions : [
         {
-            Q_name : {
+            question : {
                 type : String,
                 required : true
             },
-            opt_1 : {
-                type : String,
+            options : [],
+            correct : {
+                type : Number,
                 required : true
-            },
-            opt_2 : {
-                type : String,
-                required : true
-            },
-            opt_3 : {
-                type : String,
-                required : true
-            },
-            opt_4 : {
-                type : String,
-                required : true
-            },
+            }
         }
     ]
 },{
