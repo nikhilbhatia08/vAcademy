@@ -1,5 +1,6 @@
 const {Test} = require("../model/TestModel")
 const {Test_Result} = require("../model/TestResults")
+const XLSX = require('xlsx');
 
 //To Create new Test
 const Create_Test = async(req , res) => {
@@ -39,6 +40,53 @@ const Create_Test = async(req , res) => {
         console.log(err);
         return res.status(400).json("Unable to create a new test")
     }
+}
+
+const create_Test_With_Excel = async(req, res) => {
+    try{
+        //console.log(req.files);
+        var workbook = XLSX.readFile(req.files[0].path);
+        var sheet_name_list = workbook.SheetNames;
+        var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+        console.log(xlData);
+        const Test_name = req.body.Test_name;
+        const Test_Marks = req.body.Marks;
+        var questions = [];
+        for(var i = 0; i < xlData.length; i++){
+            var question = {
+                question : xlData[i].Question,
+                options : [xlData[i].Opt1, xlData[i].Opt2, xlData[i].Opt3, xlData[i].Opt4],
+                correct : xlData[i].Corropt
+            }
+            questions.push(question);
+        }
+        const new_test = new Test({
+            Test_name : Test_name,
+            Test_Marks : Test_Marks,
+            Questions : questions
+        })
+        await new_test.save()
+        .then(async(response) => {
+            console.log(response);
+            const new_resultTest = new Test_Result({
+                Test_id : response._id,
+                Test_Name : response.Test_name,
+                Test_Scores : []
+            })
+            await new_resultTest.save()
+            return res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(400).json("Unable to create a new test")
+        })
+        res.status(200);
+    }
+    catch(err) {
+        console.log(err);
+        res.status(400).json("Unable to create test with excel");
+    }
+    //console.log(req);
 }
 
 //Fetch all the Tests details only not conducted to frontend
@@ -171,5 +219,6 @@ module.exports = {
     Selected_Test,
     send_results,
     LeaderBoard,
-    completedTests
+    completedTests,
+    create_Test_With_Excel
 }
